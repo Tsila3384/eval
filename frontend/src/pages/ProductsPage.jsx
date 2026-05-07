@@ -6,7 +6,7 @@ import { useNotification } from '../hooks/useNotification';
 
 const ProductsPage = () => {
     const [showForm, setShowForm] = useState(false);
-    const { createProduct } = useProducts();
+    const { createProduct, loading } = useProducts();
     const { showNotification } = useNotification();
 
     const handleCreateProduct = async (productData) => {
@@ -20,19 +20,27 @@ const ProductsPage = () => {
     };
 
     return (
-        <div>
+        <div className="animate-fade-in">
             <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold">Gestion des produits</h1>
+                <div>
+                    <h1 className="text-3xl font-bold text-gray-800">📦 Gestion des produits</h1>
+                    <p className="text-gray-500 mt-1">Gérez votre catalogue de produits</p>
+                </div>
                 <button
                     onClick={() => setShowForm(!showForm)}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                    className="btn-primary flex items-center space-x-2"
                 >
-                    {showForm ? 'Voir produits' : '+ Nouveau produit'}
+                    <span>{showForm ? '←' : '+'}</span>
+                    <span>{showForm ? 'Voir les produits' : 'Nouveau produit'}</span>
                 </button>
             </div>
 
             {showForm ? (
-                <ProductForm onSubmit={handleCreateProduct} onCancel={() => setShowForm(false)} />
+                <ProductForm 
+                    onSubmit={handleCreateProduct} 
+                    onCancel={() => setShowForm(false)}
+                    isLoading={loading}
+                />
             ) : (
                 <ProductList />
             )}
